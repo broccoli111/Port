@@ -1,6 +1,7 @@
-import { stripe, getStripePrice } from "@/lib/stripe";
+import { getStripe, getStripePrice } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import type Stripe from "stripe";
 
 export async function POST(request: Request) {
   try {
@@ -18,8 +19,7 @@ export async function POST(request: Request) {
     const priceId = getStripePrice(plan);
     const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
 
-    // If user is authenticated, attach their email and metadata
-    const sessionParams: Parameters<typeof stripe.checkout.sessions.create>[0] = {
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
@@ -29,7 +29,6 @@ export async function POST(request: Request) {
     };
 
     if (user) {
-      // Check for existing Stripe customer
       const { data: client } = await supabase
         .from("clients")
         .select("stripe_customer_id")
@@ -44,7 +43,7 @@ export async function POST(request: Request) {
       sessionParams.metadata!.user_id = user.id;
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    const session = await getStripe().checkout.sessions.create(sessionParams);
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error("Checkout error:", err);

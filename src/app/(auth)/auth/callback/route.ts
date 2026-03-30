@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -11,20 +11,23 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Check if client record exists; create if not
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       if (user) {
-        const { data: existingClient } = await supabase
+        // Use service client to bypass RLS for creating client record
+        const serviceClient = await createServiceClient();
+        const { data: existingClient } = await serviceClient
           .from("clients")
           .select("id")
           .eq("user_id", user.id)
           .single();
 
         if (!existingClient) {
-          await supabase.from("clients").insert({ user_id: user.id });
+          await serviceClient
+            .from("clients")
+            .insert({ user_id: user.id });
         }
       }
 

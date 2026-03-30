@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { statusLabels, formatDate, formatDateTime } from "@/lib/utils";
@@ -67,12 +68,12 @@ export default async function WorkerTaskDetailPage({ params }: Props) {
     <div className="max-w-4xl space-y-6">
       <div className="flex items-start justify-between">
         <div>
-          <a
+          <Link
             href="/worker/tasks"
             className="text-sm text-text-secondary hover:text-text-primary mb-2 inline-block"
           >
             &larr; Back to Tasks
-          </a>
+          </Link>
           <h1 className="text-2xl font-bold text-text-primary">{task.title}</h1>
           <p className="text-sm text-text-secondary mt-1">
             Client: {clientUser?.full_name || clientUser?.email || "Unknown"}{" "}

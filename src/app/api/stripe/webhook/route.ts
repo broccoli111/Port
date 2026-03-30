@@ -1,4 +1,4 @@
-import { stripe, getPlanFromPrice } from "@/lib/stripe";
+import { getStripe, getPlanFromPrice } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET!
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
           .eq("id", existingClient.id);
       } else {
         // New customer — try to find by checkout session metadata
-        const customer = (await stripe.customers.retrieve(
+        const customer = (await getStripe().customers.retrieve(
           customerId
         )) as Stripe.Customer;
         const email = customer.email;

@@ -30,6 +30,7 @@ export interface Database {
           role?: UserRole;
           created_at?: string;
         };
+        Relationships: [];
       };
       clients: {
         Row: {
@@ -59,6 +60,15 @@ export interface Database {
           status?: SubscriptionStatus;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "clients_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       tasks: {
         Row: {
@@ -91,6 +101,22 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "tasks_client_id_fkey";
+            columns: ["client_id"];
+            isOneToOne: false;
+            referencedRelation: "clients";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tasks_assigned_to_fkey";
+            columns: ["assigned_to"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       task_files: {
         Row: {
@@ -120,6 +146,22 @@ export interface Database {
           file_type?: "brief" | "deliverable";
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "task_files_task_id_fkey";
+            columns: ["task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "task_files_uploaded_by_fkey";
+            columns: ["uploaded_by"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       comments: {
         Row: {
@@ -143,6 +185,22 @@ export interface Database {
           content?: string;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "comments_task_id_fkey";
+            columns: ["task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comments_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       status_updates: {
         Row: {
@@ -169,6 +227,22 @@ export interface Database {
           changed_by?: string;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "status_updates_task_id_fkey";
+            columns: ["task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "status_updates_changed_by_fkey";
+            columns: ["changed_by"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       site_content: {
         Row: {
@@ -195,6 +269,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       pricing_tiers: {
         Row: {
@@ -224,6 +299,7 @@ export interface Database {
           stripe_price_id?: string;
           created_at?: string;
         };
+        Relationships: [];
       };
       faqs: {
         Row: {
@@ -247,7 +323,21 @@ export interface Database {
           sort_order?: number;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    Views: {};
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    Functions: {};
+    Enums: {
+      user_role: UserRole;
+      subscription_plan: SubscriptionPlan;
+      subscription_status: SubscriptionStatus;
+      task_status: TaskStatus;
+      file_type: "brief" | "deliverable";
+    };
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    CompositeTypes: {};
   };
 }
