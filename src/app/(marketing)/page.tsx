@@ -1,42 +1,112 @@
-import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
+const fallbackHero = {
+  title: "Ship faster with a dedicated design & dev team",
+  subtitle:
+    "Your on-demand creative and engineering partner. Submit tasks, track progress, and receive polished deliverables — all in one place.",
+  cta_text: "Get Started",
+  cta_link: "/pricing",
+};
+
+const fallbackFeatures = {
+  items: [
+    {
+      title: "Unlimited Requests",
+      description:
+        "Submit as many tasks as you need. We work through them one at a time with lightning speed.",
+      icon: "layers",
+    },
+    {
+      title: "Fixed Monthly Rate",
+      description:
+        "No surprises. Pay one flat fee per month for dedicated access to our team.",
+      icon: "credit-card",
+    },
+    {
+      title: "Fast Turnaround",
+      description:
+        "Most tasks completed within 48 hours. Larger projects scoped and delivered on schedule.",
+      icon: "zap",
+    },
+    {
+      title: "Real-time Tracking",
+      description:
+        "Watch your tasks move through our pipeline with live status updates and comments.",
+      icon: "activity",
+    },
+  ],
+};
+
+const fallbackSteps = {
+  steps: [
+    { step: 1, title: "Subscribe", description: "Pick the plan that fits your needs and start your subscription." },
+    { step: 2, title: "Submit", description: "Send us your tasks with briefs, references, and files." },
+    { step: 3, title: "Review", description: "We deliver, you review, and request revisions until it is perfect." },
+  ],
+};
+
+const fallbackFaqs = [
+  { id: "1", question: "How does the subscription work?", answer: "Once subscribed, you can submit unlimited design and development requests. We work through them based on priority, delivering completed work for your review." },
+  { id: "2", question: "What counts as a single task?", answer: "A task is a self-contained unit of work — a landing page, a logo concept, a component build, etc. Complex projects are broken into multiple tasks." },
+  { id: "3", question: "How do revisions work?", answer: "Every deliverable goes through a review cycle. You can request as many revisions as needed until you are satisfied with the result." },
+  { id: "4", question: "Can I pause my subscription?", answer: "Yes. You can pause your subscription at any time from the billing portal and resume when you are ready." },
+  { id: "5", question: "Who will be working on my tasks?", answer: "You get access to our vetted team of senior designers and developers. An admin assigns each task to the best-fit team member." },
+  { id: "6", question: "What if I do not like the work?", answer: "We iterate until you love it. If after revisions you are still not satisfied, we will work with you to find the right solution." },
+];
+
 async function getContent() {
-  const supabase = await createClient();
+  if (!isSupabaseConfigured()) {
+    return {
+      hero: fallbackHero,
+      features: fallbackFeatures,
+      howItWorks: fallbackSteps,
+      faqs: fallbackFaqs,
+    };
+  }
 
-  const [heroRes, featuresRes, howItWorksRes, faqsRes] = await Promise.all([
-    supabase
-      .from("site_content")
-      .select("content")
-      .eq("page", "home")
-      .eq("section", "hero")
-      .single(),
-    supabase
-      .from("site_content")
-      .select("content")
-      .eq("page", "home")
-      .eq("section", "features")
-      .single(),
-    supabase
-      .from("site_content")
-      .select("content")
-      .eq("page", "home")
-      .eq("section", "how_it_works")
-      .single(),
-    supabase.from("faqs").select("*").order("sort_order"),
-  ]);
+  try {
+    const supabase = await createClient();
 
-  return {
-    hero: heroRes.data?.content as Record<string, string> | null,
-    features: featuresRes.data?.content as {
-      items: { title: string; description: string; icon: string }[];
-    } | null,
-    howItWorks: howItWorksRes.data?.content as {
-      steps: { step: number; title: string; description: string }[];
-    } | null,
-    faqs: faqsRes.data || [],
-  };
+    const [heroRes, featuresRes, howItWorksRes, faqsRes] = await Promise.all([
+      supabase
+        .from("site_content")
+        .select("content")
+        .eq("page", "home")
+        .eq("section", "hero")
+        .single(),
+      supabase
+        .from("site_content")
+        .select("content")
+        .eq("page", "home")
+        .eq("section", "features")
+        .single(),
+      supabase
+        .from("site_content")
+        .select("content")
+        .eq("page", "home")
+        .eq("section", "how_it_works")
+        .single(),
+      supabase.from("faqs").select("*").order("sort_order"),
+    ]);
+
+    return {
+      hero: (heroRes.data?.content as Record<string, string>) || fallbackHero,
+      features: (featuresRes.data?.content as typeof fallbackFeatures) || fallbackFeatures,
+      howItWorks: (howItWorksRes.data?.content as typeof fallbackSteps) || fallbackSteps,
+      faqs: faqsRes.data || fallbackFaqs,
+    };
+  } catch {
+    return {
+      hero: fallbackHero,
+      features: fallbackFeatures,
+      howItWorks: fallbackSteps,
+      faqs: fallbackFaqs,
+    };
+  }
 }
 
 const featureIcons: Record<string, React.ReactNode> = {
@@ -65,15 +135,13 @@ const featureIcons: Record<string, React.ReactNode> = {
 export default async function HomePage() {
   const { hero, features, howItWorks, faqs } = await getContent();
 
-  const heroTitle = hero?.title || "Ship faster with a dedicated design & dev team";
-  const heroSubtitle =
-    hero?.subtitle ||
-    "Your on-demand creative and engineering partner. Submit tasks, track progress, and receive polished deliverables.";
-  const ctaText = hero?.cta_text || "Get Started";
-  const ctaLink = hero?.cta_link || "/pricing";
+  const heroTitle = (hero as Record<string, string>)?.title || fallbackHero.title;
+  const heroSubtitle = (hero as Record<string, string>)?.subtitle || fallbackHero.subtitle;
+  const ctaText = (hero as Record<string, string>)?.cta_text || fallbackHero.cta_text;
+  const ctaLink = (hero as Record<string, string>)?.cta_link || fallbackHero.cta_link;
 
-  const featureItems = features?.items || [];
-  const steps = howItWorks?.steps || [];
+  const featureItems = (features as typeof fallbackFeatures)?.items || [];
+  const steps = (howItWorks as typeof fallbackSteps)?.steps || [];
 
   return (
     <>

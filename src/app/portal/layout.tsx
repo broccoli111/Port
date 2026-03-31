@@ -1,5 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import {
@@ -23,6 +25,8 @@ export default async function PortalLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (!isSupabaseConfigured()) redirect("/login");
+
   const supabase = await createClient();
   const {
     data: { user },

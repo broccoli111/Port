@@ -1,5 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { DashboardIcon, TasksIcon } from "@/components/icons";
@@ -14,6 +16,8 @@ export default async function WorkerLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (!isSupabaseConfigured()) redirect("/login");
+
   const supabase = await createClient();
   const {
     data: { user },

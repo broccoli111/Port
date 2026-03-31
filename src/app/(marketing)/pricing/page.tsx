@@ -1,62 +1,79 @@
-import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, createClient } from "@/lib/supabase/server";
 import { formatCurrency } from "@/lib/utils";
 import { PricingCard } from "@/components/pricing-card";
+import type { SubscriptionPlan } from "@/types";
+
+export const dynamic = "force-dynamic";
+
+const fallbackTiers = [
+  {
+    id: "a",
+    name: "Standard",
+    plan: "A" as SubscriptionPlan,
+    price: 3500,
+    features: [
+      "One active task at a time",
+      "Unlimited requests",
+      "48-hour turnaround",
+      "Dedicated project manager",
+      "Pause or cancel anytime",
+    ],
+    stripe_price_id: "",
+    created_at: "",
+  },
+  {
+    id: "b",
+    name: "Pro",
+    plan: "B" as SubscriptionPlan,
+    price: 5500,
+    features: [
+      "Two active tasks at a time",
+      "Unlimited requests",
+      "24-hour turnaround",
+      "Dedicated project manager",
+      "Priority support",
+      "Pause or cancel anytime",
+      "Strategy consultation calls",
+    ],
+    stripe_price_id: "",
+    created_at: "",
+  },
+];
+
+const fallbackFaqs = [
+  { id: "1", question: "How does the subscription work?", answer: "Once subscribed, you can submit unlimited design and development requests. We work through them based on priority, delivering completed work for your review." },
+  { id: "2", question: "What counts as a single task?", answer: "A task is a self-contained unit of work — a landing page, a logo concept, a component build, etc. Complex projects are broken into multiple tasks." },
+  { id: "3", question: "How do revisions work?", answer: "Every deliverable goes through a review cycle. You can request as many revisions as needed until you are satisfied with the result." },
+  { id: "4", question: "Can I pause my subscription?", answer: "Yes. You can pause your subscription at any time from the billing portal and resume when you are ready." },
+];
 
 async function getData() {
-  const supabase = await createClient();
-  const { data: tiers } = await supabase
-    .from("pricing_tiers")
-    .select("*")
-    .order("price");
-  const { data: faqs } = await supabase
-    .from("faqs")
-    .select("*")
-    .order("sort_order");
+  if (!isSupabaseConfigured()) {
+    return { tiers: fallbackTiers, faqs: fallbackFaqs };
+  }
 
-  return { tiers: tiers || [], faqs: faqs || [] };
+  try {
+    const supabase = await createClient();
+    const { data: tiers } = await supabase
+      .from("pricing_tiers")
+      .select("*")
+      .order("price");
+    const { data: faqs } = await supabase
+      .from("faqs")
+      .select("*")
+      .order("sort_order");
+
+    return {
+      tiers: tiers && tiers.length > 0 ? tiers : fallbackTiers,
+      faqs: faqs && faqs.length > 0 ? faqs : fallbackFaqs,
+    };
+  } catch {
+    return { tiers: fallbackTiers, faqs: fallbackFaqs };
+  }
 }
 
 export default async function PricingPage() {
   const { tiers, faqs } = await getData();
-
-  // Fallback tiers if DB is empty
-  const displayTiers =
-    tiers.length > 0
-      ? tiers
-      : [
-          {
-            id: "a",
-            name: "Standard",
-            plan: "A" as const,
-            price: 3500,
-            features: [
-              "One active task at a time",
-              "Unlimited requests",
-              "48-hour turnaround",
-              "Dedicated project manager",
-              "Pause or cancel anytime",
-            ],
-            stripe_price_id: "",
-            created_at: "",
-          },
-          {
-            id: "b",
-            name: "Pro",
-            plan: "B" as const,
-            price: 5500,
-            features: [
-              "Two active tasks at a time",
-              "Unlimited requests",
-              "24-hour turnaround",
-              "Dedicated project manager",
-              "Priority support",
-              "Pause or cancel anytime",
-              "Strategy consultation calls",
-            ],
-            stripe_price_id: "",
-            created_at: "",
-          },
-        ];
 
   return (
     <div className="py-20">
@@ -72,7 +89,7 @@ export default async function PricingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {displayTiers.map((tier) => (
+          {tiers.map((tier) => (
             <PricingCard
               key={tier.id}
               name={tier.name}
