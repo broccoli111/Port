@@ -305,9 +305,30 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* CTA */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-4xl mx-auto px-5 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-4">
+            Ready to ship faster?
+          </h2>
+          <p className="text-text-secondary mb-8 max-w-xl mx-auto">
+            Join teams that use our platform to accelerate their design and
+            development workflow.
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <Link href="/signup">
+              <Button size="lg">Sign Up</Button>
+            </Link>
+            <Link href="/login">
+              <Button variant="outline" size="lg">Log in</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       {faqs.length > 0 && (
-        <section id="faq" className="py-16 sm:py-20 scroll-mt-16">
+        <section id="faq" className="py-16 sm:py-20 bg-surface-secondary scroll-mt-16">
           <div className="max-w-3xl mx-auto px-5 sm:px-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-text-primary text-center mb-8 sm:mb-12">
               Frequently asked questions
@@ -343,22 +364,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* CTA */}
-      <section className="py-16 sm:py-20 bg-surface-secondary">
-        <div className="max-w-4xl mx-auto px-5 sm:px-6 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-4">
-            Ready to ship faster?
-          </h2>
-          <p className="text-text-secondary mb-8 max-w-xl mx-auto">
-            Join teams that use our platform to accelerate their design and
-            development workflow.
-          </p>
-          <Link href="/signup">
-            <Button size="lg">Get Started</Button>
-          </Link>
-        </div>
-      </section>
     </>
   );
 }
