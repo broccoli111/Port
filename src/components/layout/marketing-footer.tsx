@@ -3,8 +3,8 @@ import Link from "next/link";
 export function MarketingFooter() {
   return (
     <footer className="border-t border-border bg-surface">
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 py-10 sm:py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-7 h-7 bg-accent rounded-lg flex items-center justify-center">

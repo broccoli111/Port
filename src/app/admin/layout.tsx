@@ -41,7 +41,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-surface-secondary">
       <Sidebar items={adminNav} title="Admin" subtitle="Dashboard" />
-      <div className="ml-64">
+      <div className="lg:ml-64 pt-14 lg:pt-0">
         <Topbar
           user={{
             email: profile.email,
@@ -49,7 +49,7 @@ export default async function AdminLayout({
             role: profile.role,
           }}
         />
-        <main className="p-6">{children}</main>
+        <main className="p-4 sm:p-6">{children}</main>
       </div>
     </div>
   );

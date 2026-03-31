@@ -23,16 +23,15 @@ export function Topbar({ user }: TopbarProps) {
   }
 
   return (
-    <header className="h-16 border-b border-border bg-surface flex items-center justify-between px-6 sticky top-0 z-20">
-      <div />
-      <div className="flex items-center gap-4">
-        <div className="text-right">
-          <p className="text-sm font-medium text-text-primary">
+    <header className="h-14 lg:h-16 border-b border-border bg-surface flex items-center justify-end px-4 sm:px-6 sticky top-0 z-20">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <div className="text-right hidden sm:block">
+          <p className="text-sm font-medium text-text-primary leading-tight">
             {user.full_name || user.email}
           </p>
           <p className="text-xs text-text-tertiary capitalize">{user.role}</p>
         </div>
-        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0">
           <span className="text-white text-xs font-semibold">
             {(user.full_name || user.email)[0].toUpperCase()}
           </span>

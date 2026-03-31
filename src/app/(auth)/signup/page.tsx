@@ -47,8 +47,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-secondary px-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen flex items-center justify-center bg-surface-secondary px-5 py-8 sm:px-6">
+      <div className="w-full max-w-sm mx-auto">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
@@ -63,7 +63,7 @@ export default function SignupPage() {
           </p>
         </div>
 
-        <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
+        <div className="bg-surface rounded-xl border border-border p-5 sm:p-6 shadow-sm">
           <form onSubmit={handleSignup} className="space-y-4">
             <Input
               id="name"

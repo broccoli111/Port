@@ -69,7 +69,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full max-w-sm mx-auto">
       <div className="text-center mb-8">
         <Link href="/" className="inline-flex items-center gap-2 mb-6">
           <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
@@ -82,10 +82,10 @@ function LoginForm() {
         </p>
       </div>
 
-      <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
+      <div className="bg-surface rounded-xl border border-border p-5 sm:p-6 shadow-sm">
         <div className="flex gap-1 p-1 bg-surface-secondary rounded-lg mb-6">
           <button
-            className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-colors ${
+            className={`flex-1 text-sm py-2 px-3 rounded-md font-medium transition-colors whitespace-nowrap ${
               mode === "password"
                 ? "bg-surface text-text-primary shadow-sm"
                 : "text-text-secondary"
@@ -95,7 +95,7 @@ function LoginForm() {
             Password
           </button>
           <button
-            className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-colors ${
+            className={`flex-1 text-sm py-2 px-3 rounded-md font-medium transition-colors whitespace-nowrap ${
               mode === "magic"
                 ? "bg-surface text-text-primary shadow-sm"
                 : "text-text-secondary"
@@ -165,7 +165,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-secondary px-4">
+    <div className="min-h-screen flex items-center justify-center bg-surface-secondary px-5 py-8 sm:px-6">
       <Suspense>
         <LoginForm />
       </Suspense>

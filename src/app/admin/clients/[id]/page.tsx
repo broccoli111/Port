@@ -64,7 +64,7 @@ export default async function AdminClientDetailPage({ params }: Props) {
       </div>
 
       {/* Client info */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <Card>
           <p className="text-sm text-text-secondary mb-1">Email</p>
           <p className="text-sm font-medium text-text-primary">

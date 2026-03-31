@@ -147,9 +147,9 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 py-16 sm:py-24 md:py-32">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary tracking-tight leading-tight">
               {heroTitle}
             </h1>
             <p className="mt-6 text-lg text-text-secondary max-w-2xl mx-auto">
@@ -173,8 +173,8 @@ export default async function HomePage() {
       {/* Features */}
       {featureItems.length > 0 && (
         <section className="py-20 bg-surface-secondary">
-          <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-text-primary text-center mb-12">
+          <div className="max-w-6xl mx-auto px-5 sm:px-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-primary text-center mb-8 sm:mb-12">
               Everything you need to move fast
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -202,8 +202,8 @@ export default async function HomePage() {
       {/* How it works */}
       {steps.length > 0 && (
         <section className="py-20">
-          <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-text-primary text-center mb-12">
+          <div className="max-w-4xl mx-auto px-5 sm:px-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-primary text-center mb-8 sm:mb-12">
               How it works
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -228,8 +228,8 @@ export default async function HomePage() {
       {/* FAQ */}
       {faqs.length > 0 && (
         <section className="py-20 bg-surface-secondary">
-          <div className="max-w-3xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-text-primary text-center mb-12">
+          <div className="max-w-3xl mx-auto px-5 sm:px-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-primary text-center mb-8 sm:mb-12">
               Frequently asked questions
             </h2>
             <div className="space-y-4">
@@ -266,8 +266,8 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold text-text-primary mb-4">
+        <div className="max-w-4xl mx-auto px-5 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-4">
             Ready to ship faster?
           </h2>
           <p className="text-text-secondary mb-8 max-w-xl mx-auto">

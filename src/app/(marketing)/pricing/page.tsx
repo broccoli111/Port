@@ -77,9 +77,9 @@ export default async function PricingPage() {
 
   return (
     <div className="py-20">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-text-primary mb-4">
+      <div className="max-w-5xl mx-auto px-5 sm:px-6">
+        <div className="text-center mb-10 sm:mb-16">
+          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
             Simple, transparent pricing
           </h1>
           <p className="text-lg text-text-secondary max-w-xl mx-auto">
